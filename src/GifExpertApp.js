@@ -2,33 +2,37 @@ import React, {useState} from 'react'
 import { AddCategory } from './components/AddCategory';
 import { GifGrid } from './components/GifGrid';
 
-export const GifExpertApp = () => {
+export const GifExpertApp = ({defaultCategories = [] }) => {
 
-    const [categories, setCategories] = useState(['Messi']);
+    const [categories, setCategories] = useState(['Dogs']);
+    // const [categories, setCategories] = useState(defaultCategories);
 
-    // const handleAdd = () => {
-    //     // setCategories(['Yugioh',...categories]);
-    //     setCategories(cats => [...cats, 'Yugioh']);
-    // }
+    const deleteCategory = category => {
+        const newCategories = categories.filter(ctg => ctg !== category );
+        setCategories(newCategories);
+    }
 
     return (
         <>
-          <h2>GifExpertApp</h2>
+          <h2 className="title">GifExpertApp 📱</h2>
           <AddCategory setCategories={setCategories}/>
-          <hr/>
 
+          {
+            categories.length 
+            ?   <ol>
+                    {
+                        categories.map(category => (
+                            <GifGrid 
+                                    key={category}
+                                    category={category}
+                                    deleteCategory={deleteCategory}
+                            />
+                        ))
+                    }
+                </ol>
+            : <p className="text-nogifs">Search for something funny 😄</p>
 
-          <ol>
-              {
-                  categories.map(category => (
-                      <GifGrid 
-                            key={category}
-                            category={category}
-                      />
-                  ))
-              }
-          </ol>
-
+          }
         </>
     )
 };
